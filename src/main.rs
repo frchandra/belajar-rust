@@ -66,3 +66,20 @@ fn array_mut(){
     println!("lenght {}", lenght);
 }
 
+#[test]
+fn stack_heap(){
+    function_a();
+    function_b();
+}
+
+fn function_a(){
+    let a = 10;
+    let b = String::from("chandra");
+    println!("{} {}", a, b);
+}
+
+fn function_b(){
+    let a = 10;
+    let b = String::from("hp");
+    println!("{} {}", a, b);
+}
