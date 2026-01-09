@@ -39,3 +39,30 @@ fn test_unit(){
     println!("{:?}", test);
 }
 
+#[test]
+fn array(){
+    let array: [i32; 5] = [1, 2, 3, 4, 5];
+    println!("{:?}", array);
+
+    let a = array[0];
+    let b = array[1];
+    println!("{} {}", a, b);
+}
+
+#[test]
+fn array_mut(){
+    let mut array: [i32; 5] = [1, 2, 3, 4, 5];
+    println!("{:?}", array);
+
+    let a = array[0];
+    let b = array[1];
+    println!("{} {}", a, b);
+
+    array[0] = 10;
+    array[1] = 20;
+    println!("{:?}", array);
+
+    let lenght = array.len();
+    println!("lenght {}", lenght);
+}
+
