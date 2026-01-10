@@ -83,3 +83,29 @@ fn function_b(){
     let b = String::from("hp");
     println!("{} {}", a, b);
 }
+
+#[test]
+fn ownership(){
+    //copy data. keyword "copy"
+    let a = 10;
+    let b = a; //copy the value. b=10
+    println!("{} {}", a, b);
+}
+
+#[test]
+fn ownership_movement(){
+    let name1 = String::from("Jack");
+
+    //ownership from name1 moved to name2
+    let name2 = name1;
+    //name1 cannot be accessed here
+    //println!("{}",  name1); doesn't work for value stored in heap
+    println!("{}",  name2);
+}
+
+#[test]
+fn clone(){
+    let name1 = String::from("Jack");
+    let name2 = name1.clone(); //keyword "clone". this causes heavy computation
+    println!("{} {}", name1, name2);
+}
