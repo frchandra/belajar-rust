@@ -266,6 +266,39 @@ fn test_return_ownership2(){
     println!("{}", full_name);
     println!("{}", a);
     println!("{}", b);
-
 }
 
+fn combine_string_reference(first: &String, second: &mut String) -> String {
+    //first.push_str(second);// this will cause an error. this is a "borrowing" problem
+    second.push_str("+"); // mutable reference
+    // the mutable reference only "live" within this scope
+    format!("{}-{}", first, second)
+}
+
+#[test]
+fn test_reference(){
+    let mut first = String::from("Jack");
+    let mut second = String::from("Ma");
+
+    first.push_str("-");// you can edit this. because it's not "borrowed" value
+
+    let name = combine_string_reference(&first, &mut second);
+    println!("{}", name);
+    println!("{}", first);
+    println!("{}", second);
+
+
+    // at the same moment you only allowed to create 1 mutable reference
+
+    // this is actually not breaking the rule. because of the 'scope' thing.
+    let name = combine_string_reference(&first, &mut second);
+    let name = combine_string_reference(&first, &mut second);
+    let name = combine_string_reference(&first, &mut second);
+
+    // violation case
+    let  valueBorrow1 = &mut second;
+    //let  valueBorrow2 = &mut second; //this is not allowed. because the two lives in the same scope in the same time
+    let name = combine_string_reference(&first, valueBorrow1);
+    //let name = combine_string_reference(&first, valueBorrow2); //this is not allowed
+
+}
