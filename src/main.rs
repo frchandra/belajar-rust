@@ -214,3 +214,58 @@ fn range_inclusive() {
         println!("{}", array[i]);
     }
 }
+
+fn print_number(number: i32){
+    println!("{}", number);
+}
+
+fn hi(name: String){
+    println!("{}", name);
+}
+
+#[test]
+fn test_function_ownership(){
+    let number = 10; //stored in stack
+    print_number(number); //copy data. because copying data in stack is cheap
+    println!("Number: {}", number);
+
+    let name = String::from("Jack");
+    hi(name); //transfer ownership. because copying data in heap is expensive
+    //println!("Name: {}", name); //doesn't work
+}
+
+fn combine_string(first: String, second: String) -> String {
+    format!("{}-{}", first, second)
+}
+
+fn combine_string_return(first: String, second: String) -> (String, String, String) {
+    let full_name = format!("{}-{}", first, second);
+    (first, second, full_name)
+
+}
+
+#[test]
+fn test_return_ownership(){
+    let first_name = String::from("Jack");
+    let second_name = String::from("Ma");
+
+    let name = combine_string(first_name, second_name); //this return the value ownership to this variable
+
+    println!("{}", name);
+    //println!("{}", second_name);//ownership has changed and lost
+    //println!("First : {}", first_name);// ownership has changed and lost
+}
+
+#[test]
+fn test_return_ownership2(){
+    let first_name = String::from("Jack");
+    let second_name = String::from("Ma");
+
+    let (a, b, full_name) = combine_string_return(first_name, second_name);
+
+    println!("{}", full_name);
+    println!("{}", a);
+    println!("{}", b);
+
+}
+
