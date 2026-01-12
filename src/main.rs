@@ -351,3 +351,58 @@ fn test_person_method() {
     };
     person.greet("Jack");
 }
+
+trait Helloable {
+    fn hello(&self) -> String {
+        String::from("Hello!")
+    }
+    fn introduce(&self) -> String;
+    fn greet(&self, name: &str) -> String;
+}
+
+impl Helloable for Person {
+    fn introduce(&self) -> String {
+        format!("I am, {} {}!", self.first_name, self.middle_name)
+    }
+    fn greet(&self, name: &str) -> String {
+        format!("I'm {}, Hello {}!", self.first_name, name)
+    }
+}
+
+fn say_hello_from_trait(pers: &impl Helloable) {
+    println!("{}", pers.introduce())
+}
+
+#[test]
+fn test_trait_function() {
+    let person = Person{
+        first_name: String::from("Max"),
+        middle_name: String::from("Ver"),
+        last_name: String::from("Stephen"),
+        age: 20,
+    };
+
+    say_hello_from_trait(&person);
+    hello_and_goodbye(&person);
+}
+
+
+trait CanSayGoodBye {
+    fn good_bye(&self) -> String;
+    fn good_bye_to(&self, name: &str) -> String;
+}
+
+impl CanSayGoodBye for Person {
+    fn good_bye(&self) -> String {
+        format!("Goodbye, my name is {}", self.first_name)
+    }
+
+    fn good_bye_to(&self, name: &str) -> String {
+        format!("Goodbye {}, my name is {}", name, self.first_name)
+    }
+}
+
+fn hello_and_goodbye(value: &(impl Helloable + CanSayGoodBye)) {
+    println!("{}", value.introduce());
+    println!("{}", value.good_bye());
+}
