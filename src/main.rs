@@ -1,3 +1,31 @@
+mod Persona {
+    pub struct User {
+        pub first_name: String,
+        pub last_name: String,
+        pub username: String,
+        pub email: String,
+        pub age: u8,
+    }
+    impl User {
+        pub fn say_hello(&self, name: &str) {
+            println!("Hello {}, my name is {}", name, self.first_name);
+        }
+    }
+}
+
+#[test]
+fn test_persone() {
+    let user: Persona::User = Persona::User {
+        first_name: String::from("Jack"),
+        last_name: String::from("Ma"),
+        username: String::from("Mama"),
+        email: String::from("example.com"),
+        age: 20,
+    };
+
+    user.say_hello("Mama");
+}
+
 fn main() {
     println!("Hello, world!");
 }
@@ -8,7 +36,7 @@ fn hello_test() {
 }
 
 #[test]
-fn tuple(){
+fn tuple() {
     let mut data: (i32, f64, bool) = (10, 10.5, true);
     println!("{:?}", data);
 
@@ -26,12 +54,12 @@ fn tuple(){
     println!("{:?}", data);
 }
 
-fn unit(){
+fn unit() {
     println!("Hello, world!");
 }
 
 #[test]
-fn test_unit(){
+fn test_unit() {
     let result: () = unit();
     println!("{:?}", result);
 
@@ -40,7 +68,7 @@ fn test_unit(){
 }
 
 #[test]
-fn array(){
+fn array() {
     let array: [i32; 5] = [1, 2, 3, 4, 5];
     println!("{:?}", array);
 
@@ -50,7 +78,7 @@ fn array(){
 }
 
 #[test]
-fn array_mut(){
+fn array_mut() {
     let mut array: [i32; 5] = [1, 2, 3, 4, 5];
     println!("{:?}", array);
 
@@ -67,25 +95,25 @@ fn array_mut(){
 }
 
 #[test]
-fn stack_heap(){
+fn stack_heap() {
     function_a();
     function_b();
 }
 
-fn function_a(){
+fn function_a() {
     let a = 10;
     let b = String::from("chandra");
     println!("{} {}", a, b);
 }
 
-fn function_b(){
+fn function_b() {
     let a = 10;
     let b = String::from("hp");
     println!("{} {}", a, b);
 }
 
 #[test]
-fn ownership(){
+fn ownership() {
     //copy data. keyword "copy"
     let a = 10;
     let b = a; //copy the value. b=10
@@ -93,29 +121,29 @@ fn ownership(){
 }
 
 #[test]
-fn ownership_movement(){
+fn ownership_movement() {
     let name1 = String::from("Jack");
 
     //ownership from name1 moved to name2
     let name2 = name1;
     //name1 cannot be accessed here
     //println!("{}",  name1); doesn't work for value stored in heap
-    println!("{}",  name2);
+    println!("{}", name2);
 }
 
 #[test]
-fn clone(){
+fn clone() {
     let name1 = String::from("Jack");
     let name2 = name1.clone(); //keyword "clone". this causes heavy computation
     println!("{} {}", name1, name2);
 }
 
 #[test]
-fn loop_expression(){
+fn loop_expression() {
     let mut count = 0;
-    loop{
+    loop {
         count += 1;
-        if count > 10{
+        if count > 10 {
             break;
         } else if count % 2 == 0 {
             continue;
@@ -125,7 +153,7 @@ fn loop_expression(){
     }
 }
 #[test]
-fn loop_with_return_val(){
+fn loop_with_return_val() {
     let mut counter = 0;
     let result = loop {
         counter += 1;
@@ -138,11 +166,11 @@ fn loop_with_return_val(){
 }
 
 #[test]
-fn loop_with_label(){
+fn loop_with_label() {
     let mut num = 1;
     'outer: loop {
         let mut i = 1;
-        loop{
+        loop {
             if num > 10 {
                 break 'outer;
             }
@@ -215,16 +243,16 @@ fn range_inclusive() {
     }
 }
 
-fn print_number(number: i32){
+fn print_number(number: i32) {
     println!("{}", number);
 }
 
-fn hi(name: String){
+fn hi(name: String) {
     println!("{}", name);
 }
 
 #[test]
-fn test_function_ownership(){
+fn test_function_ownership() {
     let number = 10; //stored in stack
     print_number(number); //copy data. because copying data in stack is cheap
     println!("Number: {}", number);
@@ -241,11 +269,10 @@ fn combine_string(first: String, second: String) -> String {
 fn combine_string_return(first: String, second: String) -> (String, String, String) {
     let full_name = format!("{}-{}", first, second);
     (first, second, full_name)
-
 }
 
 #[test]
-fn test_return_ownership(){
+fn test_return_ownership() {
     let first_name = String::from("Jack");
     let second_name = String::from("Ma");
 
@@ -257,7 +284,7 @@ fn test_return_ownership(){
 }
 
 #[test]
-fn test_return_ownership2(){
+fn test_return_ownership2() {
     let first_name = String::from("Jack");
     let second_name = String::from("Ma");
 
@@ -276,29 +303,51 @@ fn combine_string_reference(first: &String, second: &mut String) -> String {
 }
 
 #[test]
-fn test_reference(){
+fn test_reference() {
     let mut first = String::from("Jack");
     let mut second = String::from("Ma");
 
-    first.push_str("-");// you can edit this. because it's not "borrowed" value
+    first.push_str("-"); // you can edit this. because it's not "borrowed" value
 
     let name = combine_string_reference(&first, &mut second);
     println!("{}", name);
     println!("{}", first);
     println!("{}", second);
 
-
     // at the same moment you only allowed to create 1 mutable reference
 
     // this is actually not breaking the rule. because of the 'scope' thing.
-    let name = combine_string_reference(&first, &mut second);
+    let _name = combine_string_reference(&first, &mut second);
     let name = combine_string_reference(&first, &mut second);
     let name = combine_string_reference(&first, &mut second);
 
     // violation case
-    let  valueBorrow1 = &mut second;
+    let valueBorrow1 = &mut second;
     //let  valueBorrow2 = &mut second; //this is not allowed. because the two lives in the same scope in the same time
     let name = combine_string_reference(&first, valueBorrow1);
     //let name = combine_string_reference(&first, valueBorrow2); //this is not allowed
+}
 
+struct Person {
+    first_name: String,
+    middle_name: String,
+    last_name: String,
+    age: u8,
+}
+
+impl Person {
+    fn greet(&self, name: &str) {
+        println!("Hello, {} i'm {}", name, self.middle_name);
+    }
+}
+
+#[test]
+fn test_person_method() {
+    let person = Person {
+        first_name: String::from("Max"),
+        middle_name: String::from("Ver"),
+        last_name: String::from("Stephen"),
+        age: 20,
+    };
+    person.greet("Jack");
 }
